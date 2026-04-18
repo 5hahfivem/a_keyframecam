@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Camera Keyframer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow:wght@500;700;800&family=JetBrains+Mono:wght@400;500&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="root" class="hidden" aria-hidden="true">
+
+    <!-- Center crosshair so the operator can see camera focus. -->
+    <div class="crosshair">
+      <span></span><span></span>
+    </div>
+
+    <!-- Live coords + progress bar pinned along the top edge. -->
+    <div class="topbar">
+      <div class="hud-row">
+        <span class="hud-label">POS</span>
+        <span class="hud-val"><i>X</i><b id="coordX">0.0</b></span>
+        <span class="hud-val"><i>Y</i><b id="coordY">0.0</b></span>
+        <span class="hud-val"><i>Z</i><b id="coordZ">0.0</b></span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">ROT</span>
+        <span class="hud-val"><i>P</i><b id="rotX">0</b>°</span>
+        <span class="hud-val"><i>R</i><b id="rotY">0</b>°</span>
+        <span class="hud-val"><i>Y</i><b id="rotZ">0</b>°</span>
+      </div>
+      <div class="hud-row">
+        <span class="hud-label">FOV</span>
+        <span class="hud-val"><b id="fov">50</b></span>
+      </div>
+    </div>
+
+    <!-- Playback progress strip along the bottom edge. -->
+    <div class="progress" id="progress">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- Main side panel. -->
+    <aside class="panel">
+      <header class="panel-header">
+        <div class="stage">Cinematic Tool</div>
+        <div class="title">Camera Keyframer</div>
+        <div class="meta">
+          <span id="kfCount">0 keyframes</span>
+          <span class="sep">·</span>
+          <span id="totalTime">0.0s total</span>
+        </div>
+      </header>
+
+      <section class="controls-hint">
+        <div class="hint-title">Controls</div>
+        <ul>
+          <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><span>Move</span></li>
+          <li><kbd>Space</kbd><kbd>Ctrl</kbd><span>Up / Down</span></li>
+          <li><kbd>Q</kbd><kbd>E</kbd><span>Rotate (yaw)</span></li>
+          <li><kbd>↑</kbd><kbd>↓</kbd><span>Pitch</span></li>
+          <li><kbd>Z</kbd><kbd>C</kbd><span>Roll</span></li>
+          <li><kbd>Shift</kbd><kbd>Alt</kbd><span>Fast / Slow</span></li>
+          <li><kbd>Wheel</kbd><span>FOV</span></li>
+          <li><kbd>Enter</kbd><span>Add keyframe</span></li>
+          <li><kbd>P</kbd><kbd>O</kbd><span>Play / Stop</span></li>
+          <li><kbd>Back</kbd><span>Exit</span></li>
+        </ul>
+      </section>
+
+      <section class="keyframe-list-wrap">
+        <div class="list-head">
+          <span>Keyframes</span>
+          <button class="btn-ghost" id="clearBtn" title="Clear all">Clear</button>
+        </div>
+        <ul class="kf-list" id="kfList">
+          <li class="kf-empty">No keyframes yet. Press <kbd>Enter</kbd> to capture.</li>
+        </ul>
+      </section>
+
+      <footer class="panel-footer">
+        <button class="btn btn-primary" id="addBtn">＋ Add</button>
+        <button class="btn btn-go"      id="playBtn">▶ Play</button>
+        <button class="btn"             id="stopBtn" disabled>■ Stop</button>
+        <button class="btn"             id="exportBtn">Export</button>
+        <button class="btn btn-ghost"   id="closeBtn">Close</button>
+      </footer>
+
+      <div class="toast" id="toast"></div>
+    </aside>
+
+    <!-- Export modal. -->
+    <div id="exportModal" class="modal hidden">
+      <div class="modal-inner">
+        <div class="modal-head">
+          <div class="modal-title">Export Keyframes</div>
+          <button class="btn-icon" id="exportCloseBtn">×</button>
+        </div>
+        <textarea id="exportText" readonly spellcheck="false"></textarea>
+        <div class="modal-actions">
+          <button class="btn btn-primary" id="copyBtn">Copy JSON</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
